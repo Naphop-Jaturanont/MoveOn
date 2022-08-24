@@ -47,7 +47,7 @@
                     "id": "43cb5654-b6c1-4e4c-a2f6-7b191488596a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -231,8 +231,8 @@
                 {
                     "name": "",
                     "id": "af1e070c-8a9b-4c22-8926-20ae9195adee",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "Hold",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Crouch",
