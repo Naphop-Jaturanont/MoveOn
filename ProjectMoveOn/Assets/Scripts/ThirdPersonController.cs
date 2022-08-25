@@ -21,6 +21,9 @@ namespace StarterAssets
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
 
+        [Tooltip("Move speed crouch of the character in m/s")]
+        public float CrouchMoveSpeed = 1.0f;
+
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
         public float RotationSmoothTime = 0.12f;
@@ -110,6 +113,9 @@ namespace StarterAssets
         private const float _threshold = 0.01f;
 
         public bool CheckCrouch;
+
+        public GameObject raycastheadtop;
+        public GameObject raycastheadbottom;
 
         private bool _hasAnimator;
 
@@ -275,6 +281,11 @@ namespace StarterAssets
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            if(_input.Crouch == true)
+            {
+                _controller.Move(targetDirection.normalized * (((_speed/4)*3) * Time.deltaTime) +
+                             new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            }
 
             // update animator if using character
             if (_hasAnimator)
@@ -288,15 +299,37 @@ namespace StarterAssets
         {
             if (Grounded)
             {
+
+                // set target speed based on move speed, sprint speed and if sprint is pressed
+                float targetSpeed = _input.Crouch ? CrouchMoveSpeed : MoveSpeed;
+
+                //if (_input.Crouch == false) targetSpeed = 0.0f;
+
+                
+
                 if (_hasAnimator)
                 {
                     Debug.Log(_input.Crouch);
                     _animator.SetBool(_animIDCrouch, _input.Crouch);
-                }
-                else
-                {
+                    if(_input.Crouch == true && _input.move == Vector2.zero)
+                    {
+                        _controller.height = 0.9f;
+                        _controller.center = new Vector3(0, 0.49f, 0);
+                    }
+                    if (_input.Crouch == true && _input.move != Vector2.zero)
+                    {
+                        
+                        _controller.height = 1.2f;
+                        _controller.center = new Vector3(0, 0.65f, 0);
+                    }
 
-                }                
+                } 
+                
+                if(_input.Crouch == false)
+                {
+                    _controller.height = 1.8f;
+                    _controller.center = new Vector3(0, 0.93f, 0);
+                }
 
             }
         }
