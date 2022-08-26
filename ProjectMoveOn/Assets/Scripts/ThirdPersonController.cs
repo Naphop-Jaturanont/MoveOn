@@ -14,6 +14,10 @@ namespace StarterAssets
 #endif
     public class ThirdPersonController : MonoBehaviour
     {
+        public static ThirdPersonController Instance;
+
+         
+
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
@@ -90,6 +94,32 @@ namespace StarterAssets
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
 
+        //Climb Setting
+        [Header("Climb Setting")]
+        [SerializeField] private float _walkAngleMax;
+        [SerializeField] private float _groundAngleMax;
+        [SerializeField] private LayerMask _layermaskClimb;
+
+        //Heights
+        [Header("Heights")]
+        [SerializeField] private float _overpassHeights;
+        [SerializeField] private float _hangHeights;
+        [SerializeField] private float _climbUpHeights;
+        [SerializeField] private float _vaultHeights;
+        [SerializeField] private float stepHeights;
+
+        [Header("Offsets")]
+        [SerializeField] private Vector3 endoffset;
+        [SerializeField] private Vector3 climbOriginDown;
+
+        [Header("Animation setting")]
+        public crossfangSetting standtoFreeHandSetting;
+        public crossfangSetting climbUpSetting;
+        public crossfangSetting vaultSetting;
+        public crossfangSetting stepUpSetting;
+        public crossfangSetting dropSetting;
+        public crossfangSetting dropToAirSetting;
+
         // timeout deltatime
         private float _jumpTimeoutDelta;
         private float _fallTimeoutDelta;
@@ -101,20 +131,29 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
         private int _animIDCrouch;
+        public int _animIDIshang;
+        private int _animIDisClimbup;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
 #endif
-        private Animator _animator;
+        public Animator _animator;
+        private Rigidbody rigidbody;
+        private CapsuleCollider capsule;
         private CharacterController _controller;
         private StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
         private const float _threshold = 0.01f;
 
-        public bool CheckCrouch;
+        public bool _climbing = false;
+        public bool crouch = false;
+        public bool freefall = false;
+        private Vector3 endPosition;
+        private RaycastHit downRaycastHit;
+        private RaycastHit forwardRaycastHit;
 
-        private bool _hasAnimator;
+        public bool _hasAnimator;
 
         private bool IsCurrentDeviceMouse
         {
@@ -131,6 +170,14 @@ namespace StarterAssets
 
         private void Awake()
         {
+            if(Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(this);
+            }else if(Instance != null)
+            {
+                Destroy(this);
+            }
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -141,7 +188,9 @@ namespace StarterAssets
         private void Start()
         {
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
-            
+
+            rigidbody = GetComponent<Rigidbody>();
+            capsule = GetComponent<CapsuleCollider>();
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
@@ -166,6 +215,7 @@ namespace StarterAssets
             GroundedCheck();
             Move();
             Crouch();
+            ClimbbUP();
         }
 
         private void LateUpdate()
@@ -181,6 +231,8 @@ namespace StarterAssets
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
             _animIDCrouch = Animator.StringToHash("Crouch");
+            _animIDIshang = Animator.StringToHash("isHang");
+            _animIDisClimbup = Animator.StringToHash("isClimbup");
         }
 
         private void GroundedCheck()
@@ -289,7 +341,7 @@ namespace StarterAssets
 
         private void Crouch()
         {
-            if (Grounded)
+            if (Grounded && freefall == false)
             {
 
                 // set target speed based on move speed, sprint speed and if sprint is pressed
@@ -299,10 +351,10 @@ namespace StarterAssets
 
 
 
-                if (_hasAnimator)
+                if (_hasAnimator )
                 {
-                    Debug.Log(_input.Crouch);
                     _animator.SetBool(_animIDCrouch, _input.Crouch);
+                    crouch = true;
                     if (_input.Crouch == true && _input.move == Vector2.zero)
                     {
                         _controller.height = 0.9f;
@@ -319,6 +371,7 @@ namespace StarterAssets
 
                 if (_input.Crouch == false)
                 {
+                    crouch = false;
                     _controller.height = 1.8f;
                     _controller.center = new Vector3(0, 0.93f, 0);
                 }
@@ -326,9 +379,185 @@ namespace StarterAssets
             }
         }
 
+        private void ClimbbUP()
+        {
+            if (_climbing == true)
+            {
+                if (_input.climb == true)
+                {
+                    Debug.Log("climbup");
+                }
+            }
+            _input.climb = false;
+        }
+
+        private bool canClimb(out RaycastHit _downRaycastHit, out RaycastHit _forwardRaycastHit, out Vector3 _endPosition)
+        {
+            _endPosition = Vector3.zero;
+            _downRaycastHit = new RaycastHit();
+            _forwardRaycastHit = new RaycastHit();
+
+            bool downHit;
+            bool forwardHit;
+            bool overpassHit;
+            float climbHeight;
+            float groundAngle;
+            float wallAngle;
+
+            //RaycastHit downRaycastHit;
+           // RaycastHit forwardRaycastHit;
+            RaycastHit overpassRaycastHit;
+
+            Vector3 endPosition;
+            Vector3 forwardDirectionXZ;
+            Vector3 forwardNormalXZ;
+
+            Vector3 downDirection = Vector3.down;
+            Vector3 downOrigin = transform.TransformPoint(climbOriginDown);
+
+            downHit = Physics.Raycast(downOrigin, downDirection, out downRaycastHit, climbOriginDown.y, _layermaskClimb);
+            if (downHit)
+            {
+                //forward + over pass
+                float forwardDistance = climbOriginDown.z;
+                Vector3 forwardOrigin = new Vector3(transform.position.x, downRaycastHit.point.y - 0.1f, transform.position.z);
+                Vector3 overpassOrigin = new Vector3(transform.position.x, _overpassHeights, transform.position.z);
+
+                forwardDirectionXZ = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+                forwardHit = Physics.Raycast(forwardOrigin, forwardDirectionXZ, out forwardRaycastHit,forwardDistance , _layermaskClimb);
+                overpassHit = Physics.Raycast(overpassOrigin, forwardDirectionXZ, out overpassRaycastHit,forwardDistance , _layermaskClimb);
+                climbHeight = downRaycastHit.point.y - transform.position.y;
+
+                if (forwardHit)
+                {
+                    if(overpassHit || climbHeight < _overpassHeights)
+                    {
+                        //Angle
+                        forwardNormalXZ = Vector3.ProjectOnPlane(forwardRaycastHit.normal, Vector3.up);
+                        groundAngle = Vector3.Angle(downRaycastHit.normal, Vector3.up);
+                        wallAngle = Vector3.Angle(forwardNormalXZ, forwardDirectionXZ);
+
+                        if(wallAngle <= _walkAngleMax)
+                        {
+                            if (groundAngle <= _groundAngleMax)
+                            {
+                                //End offset
+                                Vector3 vectSurface = Vector3.ProjectOnPlane(forwardDirectionXZ, downRaycastHit.normal);
+                                endPosition = downRaycastHit.point + Quaternion.LookRotation(vectSurface, Vector3.up) * endoffset;
+
+                                //De-penetration
+                                Collider colliderB = downRaycastHit.collider;
+                                bool penetrationOverlap = Physics.ComputePenetration(
+                                    colliderA: capsule,
+                                    positionA: endPosition,
+                                    rotationA: transform.rotation,
+                                    colliderB: colliderB,
+                                    positionB: colliderB.transform.position,
+                                    rotationB: colliderB.transform.rotation,
+                                    direction: out Vector3 penetrationDirection,
+                                    distance: out float penetrationDistance);
+                                if (penetrationOverlap)
+                                    endPosition += penetrationDirection * penetrationDistance;
+
+                                //up Sweep
+                                float inflate = -0.05f;
+                                float upsweepDistance = downRaycastHit.point.y - transform.position.y;
+                                Vector3 upSweepDirection = transform.up;
+                                Vector3 upSweepOrigin = transform.position;
+                                bool upSweepHit = CharacterSweep(
+                                    position: upSweepOrigin,
+                                    rotation: transform.rotation,
+                                    direction: upSweepDirection,
+                                    distance: upsweepDistance,
+                                    layerMask: _layermaskClimb,
+                                    inflate: inflate);
+
+                                //forwardSweep
+                                Vector3 forwardSweepOrigin = transform.position + upSweepDirection * upsweepDistance;
+                                Vector3 forwardSweepVector = endPosition - forwardSweepOrigin;
+                                bool forwardSweepHit = CharacterSweep(
+                                    position: forwardSweepOrigin,
+                                    rotation: transform.rotation,
+                                    direction: forwardSweepVector.normalized,
+                                    distance: forwardSweepVector.magnitude,
+                                    layerMask: _layermaskClimb,
+                                    inflate: inflate);
+
+                                if(!upSweepHit && forwardSweepHit)
+                                {
+                                    _endPosition = endPosition;
+                                    _downRaycastHit = downRaycastHit;
+                                    _forwardRaycastHit = forwardRaycastHit;
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            return false;
+        }
+
+        private bool CharacterSweep(Vector3 position, Quaternion rotation,Vector3 direction, float distance, LayerMask layerMask, float inflate)
+        {
+            float heightScale = Mathf.Abs(transform.lossyScale.y);
+            float radiusScale = Mathf.Max(Mathf.Abs(transform.lossyScale.x), Mathf.Abs(transform.lossyScale.z));
+
+            float radius = capsule.radius * radiusScale;
+            float totalheights = Mathf.Max(capsule.height * heightScale, radius * 2);
+
+            Vector3 capsuleup = rotation * Vector3.up;
+            Vector3 center = position + rotation * capsule.center;
+            Vector3 top = center + capsuleup * (totalheights / 2 - radius);
+            Vector3 bottom = center - capsuleup * (totalheights / 2 - radius);
+
+            bool sweepHit = Physics.CapsuleCast(
+                point1: bottom,
+                point2: top,
+                radius: radius,
+                direction: direction,
+                maxDistance: distance,
+                layerMask: _layermaskClimb);
+
+            return sweepHit;
+        }
+
+        private void InitiateClimb()
+        {
+            _climbing = true;
+            _speed = 0;
+            _animator.SetFloat("Speed", 0);//Forward
+            capsule.enabled = false;
+            rigidbody.isKinematic = true;
+
+            float climheight = downRaycastHit.point.y - transform.position.y;
+
+            if(climheight > _hangHeights)
+            {
+                _animator.CrossFadeInFixedTime(standtoFreeHandSetting);
+            }
+            else if(climheight > _climbUpHeights)
+            {
+                _animator.CrossFadeInFixedTime(climbUpSetting);
+            }
+            else if(climheight > _vaultHeights)
+            {
+                _animator.CrossFadeInFixedTime(vaultSetting);
+            }
+            else if(climheight > stepHeights)
+            {
+                _animator.CrossFadeInFixedTime(stepUpSetting);
+            }
+            else
+            {
+                _climbing = false;
+            }
+        }
+
         private void JumpAndGravity()
         {
-            if (Grounded)
+            if (Grounded && crouch == false)
             {
                 // reset the fall timeout timer
                 _fallTimeoutDelta = FallTimeout;
@@ -338,6 +567,7 @@ namespace StarterAssets
                 {
                     _animator.SetBool(_animIDJump, false);
                     _animator.SetBool(_animIDFreeFall, false);
+                    freefall = false;
                 }
 
                 // stop our velocity dropping infinitely when grounded
@@ -347,7 +577,7 @@ namespace StarterAssets
                 }
 
                 // Jump
-                if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+                if (_input.jump && _jumpTimeoutDelta <= 0.0f  )
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
@@ -378,14 +608,15 @@ namespace StarterAssets
                 else
                 {
                     // update animator if using character
-                    if (_hasAnimator)
+                    if (_hasAnimator )
                     {
-                        _animator.SetBool(_animIDFreeFall, true);
+                        _animator.SetBool(_animIDFreeFall, true);                        
                     }
                 }
 
                 // if we are not grounded, do not jump
                 _input.jump = false;
+                
             }
 
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
@@ -435,5 +666,8 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
         }
+
+        
+
     }
 }
