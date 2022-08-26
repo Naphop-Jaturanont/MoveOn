@@ -33,6 +33,11 @@ namespace StarterAssets
             starterAssetsInputs.CrouchInput(virtualSprintState);
         }
 
+        public void VirtualClimbInput(bool virtualSprintState)
+        {
+            starterAssetsInputs.ClimbInput(virtualSprintState);
+        }
+
     }
 
 }
