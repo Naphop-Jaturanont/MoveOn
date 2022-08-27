@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class Chest : MonoBehaviour, IInteractable
+public class Item : MonoBehaviour, IInteractable
 {
     [SerializeField] private string _prompt;
 
@@ -11,7 +10,7 @@ public class Chest : MonoBehaviour, IInteractable
     
     public bool Interact(Interactor interactor)
     {
-        Debug.Log("Opening chest!");
+        Debug.Log("Get it!"); 
         return true;
     }
 }
