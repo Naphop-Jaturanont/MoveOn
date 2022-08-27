@@ -1114,6 +1114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MoveSpeed: 2
   SprintSpeed: 5.335
+  CrouchMoveSpeed: 1
   RotationSmoothTime: 0.12
   SpeedChangeRate: 10
   LandingAudioClip: {fileID: 8300000, guid: ff697d3070687ce4583faa0561a145a2, type: 3}
@@ -1144,6 +1145,24 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  _walkAngleMax: 0
+  _groundAngleMax: 0
+  _layermaskClimb:
+    serializedVersion: 2
+    m_Bits: 0
+  _overpassHeights: 0
+  _hangHeights: 0
+  _climbUpHeights: 0
+  _vaultHeights: 0
+  stepHeights: 0
+  endoffset: {x: 0, y: 0, z: 0}
+  climbOriginDown: {x: 0, y: 0, z: 0}
+  _animIDIshang: 0
+  _animator: {fileID: 0}
+  _climbing: 0
+  crouch: 0
+  freefall: 0
+  _hasAnimator: 0
 --- !u!114 &5885216827943657505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1177,6 +1196,8 @@ MonoBehaviour:
   look: {x: 0, y: 0}
   jump: 0
   sprint: 0
+  Crouch: 0
+  climb: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1
