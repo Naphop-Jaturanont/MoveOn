@@ -10,17 +10,7 @@ public class Item : MonoBehaviour, IInteractable
     
     public bool Interact(Interactor interactor)
     {
-        var pickup = interactor.GetComponent<PickupAndDrop>();
-
-        if (pickup == null) return false;
-
-        if (pickup.Haskey)
-        {
-            Debug.Log("Get it");
-            return true;
-        }
-
-        Debug.Log("log");
-        return false;
+        Debug.Log("Get it!"); 
+        return true;
     }
 }
