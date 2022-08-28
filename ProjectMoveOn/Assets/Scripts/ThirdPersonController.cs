@@ -150,6 +150,7 @@ namespace StarterAssets
         public bool _ladderYZ = false;
         public bool crouch = false;
         public bool freefall = false;
+        public bool openlamb = false;
         private Vector3 endPosition;
         private RaycastHit downRaycastHit;
         private RaycastHit forwardRaycastHit;
@@ -217,6 +218,30 @@ namespace StarterAssets
             Move();
             Crouch();
             ClimbbUP();
+            Handup();
+            Interact();
+        }
+
+        private void Interact()
+        {
+            if (_input.Interact)
+            {
+                Debug.Log("interact");
+            }
+            _input.Interact = false;
+        }
+
+        private void Handup()
+        {
+            if (_input.handup)
+            {
+                Debug.Log("chu lamp");
+                openlamb = !openlamb;
+                Debug.Log(openlamb);
+                //chu lamb
+                //increase area light
+            }
+            _input.handup = false;
         }
 
         private void LateUpdate()
