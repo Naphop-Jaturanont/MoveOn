@@ -6,7 +6,11 @@ TagManager:
   tags:
   - CinemachineTarget
   - checkhead
+<<<<<<< HEAD
   - Lamp
+=======
+  - checkhang
+>>>>>>> leadge
   layers:
   - Default
   - TransparentFX
