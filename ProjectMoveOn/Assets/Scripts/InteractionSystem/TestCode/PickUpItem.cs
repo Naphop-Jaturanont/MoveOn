@@ -20,6 +20,14 @@ public class PickUpItem : MonoBehaviour
         PickUpPoint = GameObject.Find("PickupPoint").transform;
     }
 
+    public void PickUpLamp()
+    {
+        if (!itemIsPicked)
+        {
+            itemIsPicked = true;
+           
+        }
+    }
     void Update()
     {
         pickUpDistance = Vector3.Distance(player.position, transform.position);
@@ -29,7 +37,7 @@ public class PickUpItem : MonoBehaviour
             if (Keyboard.current.eKey.wasPressedThisFrame && itemIsPicked == false && PickUpPoint.childCount < 1)
             {
                 GetComponent<Rigidbody>().useGravity = false;
-                GetComponent<BoxCollider>().enabled = false;
+                GetComponent<BoxCollider>().isTrigger = true;
                 this.transform.position = PickUpPoint.position;
                 this.transform.parent = GameObject.Find("PickupPoint").transform;
 
@@ -40,9 +48,9 @@ public class PickUpItem : MonoBehaviour
         if(Keyboard.current.qKey.wasPressedThisFrame&& itemIsPicked == true)
         {
             this.transform.parent = null;
-            GetComponent<Rigidbody>().useGravity = true;
-            GetComponent<BoxCollider>().enabled = true;
             itemIsPicked = false;
+            GetComponent<Rigidbody>().useGravity = true;
+            GetComponent<BoxCollider>().isTrigger = false;
         }
     }
 }
