@@ -286,31 +286,27 @@ namespace StarterAssets
             if (_input.move == Vector2.zero) targetSpeed = 0.0f;
 
             // a reference to the players current horizontal velocity
-            
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
 
             float speedOffset = 0.1f;
             float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
 
             // accelerate or decelerate to target speed
-
             if (currentHorizontalSpeed < targetSpeed - speedOffset ||
-                    currentHorizontalSpeed > targetSpeed + speedOffset)
-                {
-                    // creates curved result rather than a linear one giving a more organic speed change
-                    // note T in Lerp is clamped, so we don't need to clamp our speed
-                    _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
-                        Time.deltaTime * SpeedChangeRate);
+                currentHorizontalSpeed > targetSpeed + speedOffset)
+            {
+                // creates curved result rather than a linear one giving a more organic speed change
+                // note T in Lerp is clamped, so we don't need to clamp our speed
+                _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
+                    Time.deltaTime * SpeedChangeRate);
 
-                    // round speed to 3 decimal places
-                    _speed = Mathf.Round(_speed * 1000f) / 1000f;
-                }
-                else
-                {
-                    _speed = targetSpeed;
-                }
-            
-                
+                // round speed to 3 decimal places
+                _speed = Mathf.Round(_speed * 1000f) / 1000f;
+            }
+            else
+            {
+                _speed = targetSpeed;
+            }
 
             _animationBlend = Mathf.Lerp(_animationBlend, targetSpeed, Time.deltaTime * SpeedChangeRate);
             if (_animationBlend < 0.01f) _animationBlend = 0f;
@@ -320,7 +316,7 @@ namespace StarterAssets
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
-            if (_input.move != Vector2.zero)
+            if (_input.move != Vector2.zero && _climbing == false)
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                                   _mainCamera.transform.eulerAngles.y;
@@ -331,12 +327,13 @@ namespace StarterAssets
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
 
+
             Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
 
             // move the player
             if (_input.move != Vector2.zero)
             {
-                if ( _ladderYZ == false)
+                if (_ladderYZ == false && _climbing == false)
                 {
                     _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
@@ -347,39 +344,15 @@ namespace StarterAssets
                 }
             }
 
-
-
-
-                // update animator if using character
-                if (_hasAnimator)
+            // update animator if using character
+            if (_hasAnimator)
             {
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
-
-            if (_input.move != Vector2.zero && _ladderYZ == true)
-            {
-                float currentVerticalSpeed = new Vector3(0.0f, _controller.velocity.y, _controller.velocity.z).magnitude;
-                if (currentVerticalSpeed < targetSpeed - speedOffset ||
-                currentVerticalSpeed > targetSpeed + speedOffset)
-                {
-                    // creates curved result rather than a linear one giving a more organic speed change
-                    // note T in Lerp is clamped, so we don't need to clamp our speed
-                    _speed = Mathf.Lerp(currentHorizontalSpeed, targetSpeed * inputMagnitude,
-                        Time.deltaTime * SpeedChangeRate);
-
-                    // round speed to 3 decimal places
-                    _speed = Mathf.Round(_speed * 1000f) / 1000f;
-                }
-                else
-                {
-                    _speed = targetSpeed;
-                }
-            }
-
         }
 
-        private void Crouch()
+            private void Crouch()
         {
             if (Grounded && freefall == false)
             {
@@ -425,6 +398,7 @@ namespace StarterAssets
             {
                 if (_input.climb == true)
                 {
+                    _animator.SetFloat(_animIDisClimbup, 0.111f);
                     Debug.Log("climbup");
                 }
             }
@@ -542,8 +516,14 @@ namespace StarterAssets
                 AudioSource.PlayClipAtPoint(LandingAudioClip, transform.TransformPoint(_controller.center), FootstepAudioVolume);
             }
         }
-
-        
+        public void ClimFromledge()
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y + 1.8f, transform.position.z + 1.5f);
+            //transform.position = checkhang.Getstanduppos(0);
+            _animator.SetFloat(_animIDisClimbup, 0.0f);
+            _animator.SetBool(_animIDIshang, false);
+            _climbing = false;
+        }
 
     }
 }
