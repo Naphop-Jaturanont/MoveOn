@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class Pursue_leech : State_leech
 {
     //private GameObject[] waypoints => WPManager.Instance.getWPPosition();
     int currentIndex = 0;
-    public Pursue_leech(GameObject npc, NavMeshAgent agent,Transform player, TextMesh txtStatus) :base(npc,agent,player,txtStatus)
+    public Pursue_leech(GameObject npc, NavMeshAgent agent,Transform player, TextMeshProUGUI txtStatus,Animator animator) :base(npc,agent,player,txtStatus,animator)
     {
         name = StateStatus.Pursue;
         agent.speed = 2;
@@ -18,7 +19,7 @@ public class Pursue_leech : State_leech
 
     public override void Enter()
     {
-        txtStatus.text = "Patrol";
+        txtStatus.text = "pursue";
 
         /*float lastDist = Mathf.Infinity;
         currentIndex = 0;
@@ -37,22 +38,11 @@ public class Pursue_leech : State_leech
 
     public override void Update()
     {
-        /*if(agent.remainingDistance < 1)
+        animator.SetFloat("Speed", 0.11f);
+        agent.SetDestination(player.position);
+        if (DistancePlayer() < 1)//add in state
         {
-            if(currentIndex>=waypoints.Length - 1)
-            {
-                currentIndex = 0;
-            }
-            else
-            {
-                currentIndex++;
-            }
-            agent.SetDestination(waypoints[currentIndex].transform.position);
-
-        }*/
-        if (DistancePlayer() < 10)//add in state
-        {
-            nextState = new Attack_leech (npc, agent, player, txtStatus);
+            nextState = new Attack_leech (npc, agent, player, txtStatus,animator);
             stage = EventState.Exit;
         }
     }

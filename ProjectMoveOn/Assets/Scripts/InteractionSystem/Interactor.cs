@@ -13,21 +13,26 @@ public class Interactor : MonoBehaviour
      private readonly Collider[] _colliders = new Collider[3];
      [SerializeField] private int _numFound;
 
-     private void Update()
-     {
-          _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
+    [SerializeField]private StarterAssets.StarterAssetsInputs inputs;
+
+    private void Start()
+    {
+        inputs = GetComponent<StarterAssets.StarterAssetsInputs>();
+    }
+
+    private void Update()
+    {
+        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
                _interactableMask);
-
-          if (_numFound > 0)
-          {
-               var interactable = _colliders[0].GetComponent<IInteractable>();
-
-               if (interactable != null && Keyboard.current.eKey.wasPressedThisFrame)
-               {
-                    interactable.Interact(this);
-               }
-          }
-     }
+        if (_numFound > 0)
+        {
+            var interactable = _colliders[0].GetComponent<IInteractable>();
+            if (interactable != null && inputs.Interact)
+            {
+                interactable.Interact(this);
+            }
+        }
+    }
 
      private void OnDrawGizmos()
      {

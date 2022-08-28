@@ -4,13 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CinemachineTarget
-  - checkhead
-<<<<<<< HEAD
   - Lamp
-=======
-  - checkhang
->>>>>>> leadge
+  - CinemachineTarget
   layers:
   - Default
   - TransparentFX
@@ -20,8 +15,8 @@ TagManager:
   - UI
   - Interactable
   - 
-  - Character
-  - Ground
+  - 
+  - 
   - 
   - 
   - 

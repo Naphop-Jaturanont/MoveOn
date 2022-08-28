@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class State_leech
 {
@@ -21,15 +22,17 @@ public class State_leech
     protected Transform player;
     protected State_leech nextState;
     protected NavMeshAgent agent;
-    protected TextMesh txtStatus;
+    protected TextMeshProUGUI txtStatus;
+    protected Animator animator;
 
-    public State_leech(GameObject npc, NavMeshAgent agent, Transform player, TextMesh txtStatus)
+    public State_leech(GameObject npc, NavMeshAgent agent, Transform player, TextMeshProUGUI txtStatus, Animator animator)
     {
         this.npc = npc;
         this.agent = agent;
         this.stage = EventState.Enter;
         this.player = player;
         this.txtStatus = txtStatus;
+        this.animator = animator;
     }
 
     public virtual void Enter()

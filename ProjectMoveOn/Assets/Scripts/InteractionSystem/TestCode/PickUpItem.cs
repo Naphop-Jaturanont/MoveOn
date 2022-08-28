@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PickUpItem : MonoBehaviour
 {
-    private Transform PickUpPoint;
+    [SerializeField]private Transform PickUpPoint;
     private Transform player;
 
     public float pickUpDistance;

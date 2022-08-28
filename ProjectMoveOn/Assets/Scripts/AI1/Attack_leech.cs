@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class Attack_leech : State_leech
 {
     //private GameObject[] waypoints => WPManager.Instance.getWPPosition();
     int currentIndex = 0;
-    public Attack_leech(GameObject npc, NavMeshAgent agent,Transform player, TextMesh txtStatus) :base(npc,agent,player,txtStatus)
+    public Attack_leech(GameObject npc, NavMeshAgent agent,Transform player, TextMeshProUGUI txtStatus,Animator animator) :base(npc,agent,player,txtStatus,animator)
     {
         name = StateStatus.Pursue;
         agent.speed = 2;
@@ -18,7 +19,7 @@ public class Attack_leech : State_leech
 
     public override void Enter()
     {
-        txtStatus.text = "Patrol";
+        txtStatus.text = "Attack";
 
         //playanimation
 
@@ -55,7 +56,7 @@ public class Attack_leech : State_leech
         }*/
         if (DistancePlayer() > 10)//add in state
         {
-            nextState = new Pursue_leech (npc, agent, player, txtStatus);
+            nextState = new Pursue_leech (npc, agent, player, txtStatus,animator);
             stage = EventState.Exit;
         }
     }

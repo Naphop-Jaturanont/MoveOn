@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class Died_leech : State_leech
 { 
-    public Died_leech(GameObject npc, UnityEngine.AI.NavMeshAgent agent, Transform player, TextMesh txtStatus) : base(npc, agent, player, txtStatus)
+    public Died_leech(GameObject npc, UnityEngine.AI.NavMeshAgent agent, Transform player, TextMeshProUGUI txtStatus,Animator animator) : base(npc, agent, player, txtStatus,animator)
     {
         name = StateStatus.Died;
         agent.speed = 12;
