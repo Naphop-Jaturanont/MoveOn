@@ -14,6 +14,8 @@ namespace StarterAssets
 		public bool sprint;
 		public bool Crouch;
 		public bool climb;
+		public bool handup;
+		public bool Interact;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -55,6 +57,14 @@ namespace StarterAssets
 		{
 			ClimbInput(value.isPressed);
 		}
+		public void OnHandup(InputValue value)
+		{
+			handupInput(value.isPressed);
+		}
+		public void OnInteract(InputValue value)
+		{
+			interactInput(value.isPressed);
+		}
 #endif
 
 
@@ -91,6 +101,14 @@ namespace StarterAssets
 		public void ClimbInput(bool newClimbState)
 		{
 			climb = newClimbState;
+		}
+		public void handupInput(bool newJumpState)
+		{
+			handup = newJumpState;
+		}
+		public void interactInput(bool newJumpState)
+		{
+			Interact = newJumpState;
 		}
 
 		private void SetCursorState(bool newState)

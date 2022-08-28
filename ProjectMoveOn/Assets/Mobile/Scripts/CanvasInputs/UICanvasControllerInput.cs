@@ -38,6 +38,15 @@ namespace StarterAssets
             starterAssetsInputs.ClimbInput(virtualSprintState);
         }
 
+        public void VirtualhandupInput(bool virtualSprintState)
+        {
+            starterAssetsInputs.handupInput(virtualSprintState);
+        }
+        public void VirtualinteractInput(bool virtualSprintState)
+        {
+            starterAssetsInputs.interactInput(virtualSprintState);
+        }
+
     }
 
 }
