@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Idle_leech : State_leech
 {
     //private GameObject[] hides => HideManager.Instance.getHidePosition();
-    public Idle_leech(GameObject npc, UnityEngine.AI.NavMeshAgent agent, Transform player, TextMesh txtStatus) : base(npc, agent, player, txtStatus)
+    public Idle_leech(GameObject npc, UnityEngine.AI.NavMeshAgent agent, Transform player, TextMeshProUGUI txtStatus,Animator animator) : base(npc, agent, player, txtStatus,animator)
     {
         name = StateStatus.Idle;
         //agent.speed = 12;
@@ -23,10 +24,11 @@ public class Idle_leech : State_leech
     public override void Update()
     {
         //playanimation or patrol
+        
         //Hide();
         if (DistancePlayer() < 10)
         {
-            nextState = new Pursue_leech(npc, agent, player, txtStatus);
+            nextState = new Pursue_leech(npc, agent, player, txtStatus,animator);
             stage = EventState.Exit;
         }
     }
