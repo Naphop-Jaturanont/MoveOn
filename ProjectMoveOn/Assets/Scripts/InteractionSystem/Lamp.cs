@@ -8,7 +8,7 @@ public class Lamp : MonoBehaviour, IInteractable
 
     public string InteractionPrompt => _prompt;
 
-    private Transform PickUpPoint;
+    private Transform PickUpPointR;
     private Transform player;
     //[SerializeField]private GameObject lamb;
 
@@ -21,7 +21,7 @@ public class Lamp : MonoBehaviour, IInteractable
     {
         rb = GetComponent<Rigidbody>();
         player = GameObject.Find("PlayerArmature").transform;
-        PickUpPoint = GameObject.FindGameObjectWithTag("Lamp").transform;
+        PickUpPointR = GameObject.FindGameObjectWithTag("Lamp").transform;
         //lamb = GameObject.FindGameObjectWithTag("Lamp");
     }
 
@@ -41,8 +41,8 @@ public class Lamp : MonoBehaviour, IInteractable
         {
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<BoxCollider>().isTrigger = true;
-            Debug.Log(PickUpPoint);
-            transform.position = PickUpPoint.position;
+            Debug.Log(PickUpPointR);
+            transform.position = PickUpPointR.position;
             this.transform.parent = GameObject.Find("PickupPoint").transform;
 
             itemIsPicked = true;

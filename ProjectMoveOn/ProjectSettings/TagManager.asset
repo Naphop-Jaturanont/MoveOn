@@ -3,13 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-<<<<<<< HEAD
   tags: []
-=======
-  tags:
-  - Lamp
-  - CinemachineTarget
->>>>>>> 0b24f0bf3404975f80522bfb7d3fbfc48a52c9e9
   layers:
   - Default
   - TransparentFX
@@ -20,10 +14,7 @@ TagManager:
   - 
   - 
   - 
-<<<<<<< HEAD
   - 
-=======
->>>>>>> 0b24f0bf3404975f80522bfb7d3fbfc48a52c9e9
   - 
   - 
   - 
