@@ -1,3 +1,4 @@
+﻿#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class PickUpItem : MonoBehaviour
         PickUpPointR = GameObject.Find("PickupPointR").transform;
         PickUpPointL = GameObject.Find("PickupPointL").transform;
     }
-
+    
     void Update()
     {
         pickUpDistance = Vector3.Distance(player.position, transform.position);
@@ -31,23 +32,23 @@ public class PickUpItem : MonoBehaviour
         {
             if (Keyboard.current.eKey.wasPressedThisFrame )
             {
-                if (itemIsPickedR ==false && PickUpPointR.childCount < 1)
+                if (itemIsPickedR ==false && PickUpPointR.childCount < 1 )
                 {
                     GetComponent<Rigidbody>().useGravity = false;
-                    GetComponent<BoxCollider>().isTrigger = true;
+                    GetComponent<Collider>().isTrigger = true;
                     this.transform.position = PickUpPointR.position;
                     this.transform.parent = GameObject.Find("PickupPointR").transform;
                     itemIsPickedR = true;
-                    Debug.Log(itemIsPickedR.ToString());
+                    Debug.Log("R:"+itemIsPickedR.ToString());
                     
                 }
                 else
                 {
                     this.transform.parent = null;
                     GetComponent<Rigidbody>().useGravity = true;
-                    GetComponent<BoxCollider>().isTrigger = false;
+                    GetComponent<Collider>().isTrigger = false;
                     itemIsPickedR = false;
-                    Debug.Log(itemIsPickedR.ToString());
+                    Debug.Log("R"+itemIsPickedR.ToString());
 
                 }
                 
@@ -59,27 +60,29 @@ public class PickUpItem : MonoBehaviour
                 if (itemIsPickedL == false && PickUpPointL.childCount < 1)
                 {
                     GetComponent<Rigidbody>().useGravity = false;
-                    GetComponent<BoxCollider>().isTrigger = true;
+                    GetComponent<Collider>().isTrigger = true;
                     this.transform.position = PickUpPointL.position;
                     this.transform.parent = GameObject.Find("PickupPointL").transform;
                     itemIsPickedL = true;
-                    Debug.Log(itemIsPickedL.ToString());
+                    Debug.Log("L"+itemIsPickedL.ToString());
 
                 }
                 else
                 {
                     this.transform.parent = null;
                     GetComponent<Rigidbody>().useGravity = true;
-                    GetComponent<BoxCollider>().isTrigger = false;
+                    GetComponent<Collider>().isTrigger = false;
                     itemIsPickedL = false;
-                    Debug.Log(itemIsPickedL.ToString());
+                    Debug.Log("L" + itemIsPickedL.ToString());
+                    
 
                 }
 
-
+                
             }
         }
 
 
     }
 }
+#endif
