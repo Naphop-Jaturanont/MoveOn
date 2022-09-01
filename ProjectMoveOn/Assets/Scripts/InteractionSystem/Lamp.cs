@@ -4,24 +4,28 @@ using UnityEngine.InputSystem;
 
 public class Lamp : MonoBehaviour, IInteractable
 {
-    [SerializeField] private string _prompt;
+    [SerializeField] private Transform pickUpPointR;
+    [SerializeField] private Transform pickUpPointL;
+    [SerializeField] private string prompt;
 
-    public string InteractionPrompt => _prompt;
+    public string InteractionPrompt => prompt;
 
-    private Transform PickUpPoint;
-    private Transform player;
+    private Transform _pickUpPoint;
+    private Transform _player;
     //[SerializeField]private GameObject lamb;
 
     public float pickUpDistance;
 
     public bool itemIsPicked;
-    private Rigidbody rb;
+    private Rigidbody _rb;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        player = GameObject.Find("PlayerArmature").transform;
-        PickUpPoint = GameObject.FindGameObjectWithTag("Lamp").transform;
+        _rb = GetComponent<Rigidbody>();
+        _player = GameObject.Find("PlayerArmature").transform;
+        pickUpPointR = GameObject.Find("PickupPointR").transform;
+        pickUpPointL = GameObject.Find("PickupPointL").transform;
+        //_pickUpPoint = GameObject.FindGameObjectWithTag("Lamp").transform;
         //lamb = GameObject.FindGameObjectWithTag("Lamp");
     }
 
@@ -41,8 +45,8 @@ public class Lamp : MonoBehaviour, IInteractable
         {
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<BoxCollider>().isTrigger = true;
-            Debug.Log(PickUpPoint);
-            transform.position = PickUpPoint.position;
+            Debug.Log(_pickUpPoint);
+            transform.position = _pickUpPoint.position;
             this.transform.parent = GameObject.Find("PickupPoint").transform;
 
             itemIsPicked = true;

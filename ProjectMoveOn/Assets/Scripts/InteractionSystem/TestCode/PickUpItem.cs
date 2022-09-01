@@ -6,8 +6,9 @@ using UnityEngine.InputSystem;
 
 public class PickUpItem : MonoBehaviour
 {
-    [SerializeField]private Transform PickUpPointR;
+    [SerializeField] private Transform PickUpPointR;
     [SerializeField] private Transform PickUpPointL;
+    
     private Transform player;
 
     public float pickUpDistance;
@@ -40,7 +41,6 @@ public class PickUpItem : MonoBehaviour
                     this.transform.parent = GameObject.Find("PickupPointR").transform;
                     itemIsPickedR = true;
                     Debug.Log("R:"+itemIsPickedR.ToString());
-                    
                 }
                 else
                 {
@@ -49,9 +49,7 @@ public class PickUpItem : MonoBehaviour
                     GetComponent<Collider>().isTrigger = false;
                     itemIsPickedR = false;
                     Debug.Log("R"+itemIsPickedR.ToString());
-
                 }
-                
                 
             }
 
@@ -65,7 +63,6 @@ public class PickUpItem : MonoBehaviour
                     this.transform.parent = GameObject.Find("PickupPointL").transform;
                     itemIsPickedL = true;
                     Debug.Log("L"+itemIsPickedL.ToString());
-
                 }
                 else
                 {
@@ -74,15 +71,13 @@ public class PickUpItem : MonoBehaviour
                     GetComponent<Collider>().isTrigger = false;
                     itemIsPickedL = false;
                     Debug.Log("L" + itemIsPickedL.ToString());
-                    
-
                 }
 
-                
             }
+
         }
 
-
     }
+
 }
 #endif
