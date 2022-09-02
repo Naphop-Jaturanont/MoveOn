@@ -87,7 +87,7 @@ namespace StarterAssets
         private float _cinemachineTargetPitch;
 
         // player
-        private float _speed;
+        [SerializeField]private float _speed;
         private float _animationBlend;
         private float _targetRotation = 0.0f;
         private float _rotationVelocity;
@@ -392,6 +392,10 @@ namespace StarterAssets
                     transform.Translate(Vector3.up * _speed * Time.deltaTime);
                 }
             }
+            if(Grounded == false &&_ladderYZ == false)
+            {                
+                _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            }
 
             // update animator if using character
             if (_hasAnimator)
@@ -480,6 +484,7 @@ namespace StarterAssets
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                    _controller.Move(new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 
                     // update animator if using character
                     if (_hasAnimator)
@@ -517,7 +522,10 @@ namespace StarterAssets
                 _input.jump = false;
                 
             }
+            if (Grounded == false)
+            {
 
+            }
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
             if (_verticalVelocity < _terminalVelocity && _climbing == false)
             {

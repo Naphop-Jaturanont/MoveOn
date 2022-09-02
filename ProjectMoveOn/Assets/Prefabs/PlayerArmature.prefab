@@ -1614,7 +1614,6 @@ GameObject:
   - component: {fileID: 5885216827943657505}
   - component: {fileID: 135756642000475821}
   - component: {fileID: 4416926081852918493}
-  - component: {fileID: 1762682266}
   - component: {fileID: 1762682271}
   - component: {fileID: 1893200233}
   - component: {fileID: 1893200234}
@@ -1753,8 +1752,9 @@ MonoBehaviour:
   crouch: 0
   freefall: 0
   openlamb: 0
+  keepLamb: 0
   _hasAnimator: 0
-  _interactionPoint: {fileID: 1469994128}
+  _interactionPoint: {fileID: 2086422105}
   _interactionPointRadius: 0.25
   _interactableMask:
     serializedVersion: 2
@@ -1799,7 +1799,7 @@ MonoBehaviour:
   Interact: 0
   analogMovement: 0
   cursorLocked: 0
-  cursorInputForLook: 0
+  cursorInputForLook: 1
 --- !u!114 &4416926081852918493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1899,25 +1899,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &1762682266
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4416926081852918481}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dc288d27f23d494c9a6ab64bac77cf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionPoint: {fileID: 0}
-  interactionPointRadius: 0.5
-  interactableMask:
-    serializedVersion: 2
-    m_Bits: 0
-  numFound: 0
-  inputs: {fileID: 0}
 --- !u!114 &1762682271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1934,8 +1915,6 @@ MonoBehaviour:
   checkPoint:
   - {fileID: 0}
   - {fileID: 0}
-  vertorPoint: {x: 0, y: 0, z: 0}
-  dead: 5
 --- !u!114 &1893200233
 MonoBehaviour:
   m_ObjectHideFlags: 0
