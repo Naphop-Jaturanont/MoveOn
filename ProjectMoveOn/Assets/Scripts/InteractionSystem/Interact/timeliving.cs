@@ -72,6 +72,7 @@ public class timeliving : MonoBehaviour, IInteractable
                 post = false;
                 UIpast.SetActive(false);
                 UIpost.SetActive(false);
+                UIpresent.SetActive(false);
                 break;
             case "present":
                 if (present == false)
@@ -86,6 +87,7 @@ public class timeliving : MonoBehaviour, IInteractable
                 post = false;
                 UIpresent.SetActive(false);
                 UIpost.SetActive(false);
+                UIpast.SetActive(false);
                 break;
             case "post":
                 if (post == false)
@@ -100,6 +102,7 @@ public class timeliving : MonoBehaviour, IInteractable
                 post = true;
                 UIpresent.SetActive(false);
                 UIpast.SetActive(false);
+                UIpost.SetActive(false);
                 break;
             default: Debug.Log("invalid sting");
                 break;

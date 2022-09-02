@@ -8,6 +8,7 @@ TagManager:
   - checkhead
   - CinemachineTarget
   - Lamp
+  - CheckPoint
   layers:
   - Default
   - TransparentFX

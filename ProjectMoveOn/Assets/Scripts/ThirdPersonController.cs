@@ -151,6 +151,7 @@ namespace StarterAssets
         public bool crouch = false;
         public bool freefall = false;
         public bool openlamb = false;
+        public bool keepLamb =false;
         private Vector3 endPosition;
         private RaycastHit downRaycastHit;
         private RaycastHit forwardRaycastHit;
@@ -383,6 +384,7 @@ namespace StarterAssets
             {
                 if (_ladderYZ == false && _climbing == false)
                 {
+                    Debug.Log("setpostion");
                     _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                                  new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
                 }
@@ -392,6 +394,13 @@ namespace StarterAssets
                 }
             }
 
+            if(Grounded == false)
+            {
+                _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
+                                 new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+            }
+
+            //_controller.Move(new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
             // update animator if using character
             if (_hasAnimator)
             {
@@ -463,6 +472,7 @@ namespace StarterAssets
                 // update animator if using character
                 if (_hasAnimator)
                 {
+                    //Debug.Log("condition1");
                     _animator.SetBool(_animIDJump, false);
                     _animator.SetBool(_animIDFreeFall, false);
                     //freefall = false;
@@ -471,6 +481,7 @@ namespace StarterAssets
                 // stop our velocity dropping infinitely when grounded
                 if (_verticalVelocity < 0.0f && _climbing ==false)
                 {
+                    //Debug.Log("condition2");
                     _verticalVelocity = -2f;
                 }
 
@@ -479,19 +490,23 @@ namespace StarterAssets
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                    _controller.Move(new Vector3(0.0f, _verticalVelocity * Time.deltaTime, 0.0f) );
+                    
 
                     // update animator if using character
                     if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDJump, true);
                     }
+                    
                 }
-
+                _input.jump = false;
                 // jump timeout
                 if (_jumpTimeoutDelta >= 0.0f)
                 {
                     _jumpTimeoutDelta -= Time.deltaTime;
                 }
+
             }
             else
             {
@@ -514,9 +529,10 @@ namespace StarterAssets
 
                 // if we are not grounded, do not jump
                 _input.jump = false;
-                
+                //Grounded = true;
             }
 
+           
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
             if (_verticalVelocity < _terminalVelocity && _climbing == false)
             {
