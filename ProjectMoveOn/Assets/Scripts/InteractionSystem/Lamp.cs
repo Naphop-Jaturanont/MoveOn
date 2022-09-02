@@ -22,16 +22,16 @@ public class Lamp : MonoBehaviour, IInteractable
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _player = GameObject.Find("PlayerArmature").transform;
-        pickUpPointR = GameObject.Find("PickupPointR").transform;
-        pickUpPointL = GameObject.Find("PickupPointL").transform;
+        _player = GameObject.Find("playerArmature").transform;
+        pickUpPointR = GameObject.Find("pickupPointR").transform;
+        pickUpPointL = GameObject.Find("pickupPointL").transform;
         //_pickUpPoint = GameObject.FindGameObjectWithTag("Lamp").transform;
         //lamb = GameObject.FindGameObjectWithTag("Lamp");
     }
 
     private void Update()
     {
-        if (Keyboard.current.qKey.wasPressedThisFrame && itemIsPicked == true)
+        if (Keyboard.current.eKey.wasPressedThisFrame && itemIsPicked == true)
         {
             this.transform.parent = null;
             itemIsPicked = false;
