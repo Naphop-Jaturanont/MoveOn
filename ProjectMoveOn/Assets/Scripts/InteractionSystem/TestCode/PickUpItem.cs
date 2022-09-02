@@ -15,6 +15,7 @@ public class PickUpItem : MonoBehaviour
 
     public bool itemIsPickedR = false;
     public bool itemIsPickedL = false;
+    //public bool keepLamb = false; 
 
     private Rigidbody rb;
     void Start()
@@ -41,6 +42,10 @@ public class PickUpItem : MonoBehaviour
                     this.transform.parent = GameObject.Find("PickupPointR").transform;
                     itemIsPickedR = true;
                     Debug.Log("R:"+itemIsPickedR.ToString());
+                    if(this.gameObject.name == "Lamp (2)")
+                    {
+                        StarterAssets.ThirdPersonController.Instance.keepLamb = true;
+                    }
                 }
                 else
                 {

@@ -151,6 +151,7 @@ namespace StarterAssets
         public bool crouch = false;
         public bool freefall = false;
         public bool openlamb = false;
+        public bool keepLamb =false;
         private Vector3 endPosition;
         private RaycastHit downRaycastHit;
         private RaycastHit forwardRaycastHit;
