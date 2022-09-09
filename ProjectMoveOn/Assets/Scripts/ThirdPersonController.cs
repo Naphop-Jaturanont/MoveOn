@@ -580,11 +580,13 @@ namespace StarterAssets
             //transform.position = checkhang.Getstanduppos(0);
             _animator.SetFloat(_animIDisClimbup, 0.0f);
             _animator.SetBool(_animIDIshang, false);
-            Invoke("changebooleanclimb", 0.3f);
+            
+            Invoke("changebooleanclimb", 0.15f);
         }
         
         public void changebooleanclimb()
         {
+            _ladderYZ = false;
             _climbing = false;
         }
 
