@@ -2,28 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CheckLadder : MonoBehaviour
+namespace StarterAssets
 {
-    private void OnTriggerEnter(Collider other)
+    public class CheckLadder : MonoBehaviour
     {
-        if (other.gameObject.tag == "checkhead")
+        private void OnTriggerEnter(Collider other)
         {
-            StarterAssets.ThirdPersonController.Instance._ladderYZ = true;
-            Debug.Log(StarterAssets.ThirdPersonController.Instance._ladderYZ);
-            //StarterAssets.ThirdPersonController.Instance._animator.SetBool("isHang", true);//playanimationclimb
-            StarterAssets.ThirdPersonController.Instance._verticalVelocity = 0f;
+            if (other.gameObject.tag == "checkhead")
+            {
+                ThirdPersonController.Instance._ladderYZ = true;
+                Debug.Log(ThirdPersonController.Instance._ladderYZ);
+                ThirdPersonController.Instance._animator.SetBool(ThirdPersonController.Instance._animIDIshang, true);
+                //StarterAssets.ThirdPersonController.Instance._animator.SetBool("isHang", true);//playanimationclimb
+                ThirdPersonController.Instance._verticalVelocity = 0f;
+            }
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "checkhead")
-        {
-            StarterAssets.ThirdPersonController.Instance._ladderYZ = false;
-            Debug.Log(StarterAssets.ThirdPersonController.Instance._ladderYZ);
-            //StarterAssets.ThirdPersonController.Instance._animator.SetBool("isHang", true);//playanimation climb to stand
-            StarterAssets.ThirdPersonController.Instance._verticalVelocity = -2f;
-            StarterAssets.ThirdPersonController.Instance.transform.Translate(Vector3.forward * 2);
-        }
+               
     }
 }

@@ -128,11 +128,11 @@ namespace StarterAssets
         private int _animIDSpeed;
         private int _animIDGrounded;
         private int _animIDJump;
-        private int _animIDFreeFall;
+        public int _animIDFreeFall;
         private int _animIDMotionSpeed;
         private int _animIDCrouch;
         public int _animIDIshang;
-        private int _animIDisClimbup;
+        public int _animIDisClimbup;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -165,6 +165,7 @@ namespace StarterAssets
         private readonly Collider[] _colliders = new Collider[3];
         [SerializeField] private int _numFound;
 
+        public bool climbing = false;
         private bool IsCurrentDeviceMouse
         {
             get
@@ -512,7 +513,7 @@ namespace StarterAssets
                 else
                 {
                     // update animator if using character
-                    if (_hasAnimator )
+                    if (_hasAnimator && _climbing == false)
                     {
                         _animator.SetBool(_animIDFreeFall, true);                        
                     }

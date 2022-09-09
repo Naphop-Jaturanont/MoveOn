@@ -2,16 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Checkhang : MonoBehaviour
+
+namespace StarterAssets
 {
-    private void OnTriggerEnter(Collider other)
+    public class Checkhang : MonoBehaviour
     {
-        if(other.gameObject.tag == "checkhang")
+        private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(StarterAssets.ThirdPersonController.Instance._animator);
-            StarterAssets.ThirdPersonController.Instance._climbing = true;
-            StarterAssets.ThirdPersonController.Instance._animator.SetBool("isHang", true);
-            StarterAssets.ThirdPersonController.Instance._verticalVelocity = 0f;
+            if (other.gameObject.tag == "checkhang")
+            {
+                //ThirdPersonController.Instance._climbing = true;
+                ThirdPersonController.Instance._climbing = true;
+                ThirdPersonController.Instance._animator.SetBool(ThirdPersonController.Instance._animIDIshang, true);
+                Debug.Log(ThirdPersonController.Instance._climbing);
+                ThirdPersonController.Instance._verticalVelocity = 0f;
+            }
         }
     }
 }
