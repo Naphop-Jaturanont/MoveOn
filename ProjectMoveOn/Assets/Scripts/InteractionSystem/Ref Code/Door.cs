@@ -20,4 +20,14 @@ public class Door : MonoBehaviour, IInteractable
         Debug.Log("Opening door!  lol");
         return true;
     }
+
+    public bool InteractL(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool InteractR(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
 }

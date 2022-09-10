@@ -22,4 +22,14 @@ public class vineClose : MonoBehaviour, IInteractable
     {
         this.gameObject.SetActive(false);
     }
+
+    public bool InteractL(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool InteractR(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
 }

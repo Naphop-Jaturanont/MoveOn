@@ -109,6 +109,13 @@ public class timeliving : MonoBehaviour, IInteractable
         }
     }
 
+    public bool InteractL(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
 
-
+    public bool InteractR(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
 }

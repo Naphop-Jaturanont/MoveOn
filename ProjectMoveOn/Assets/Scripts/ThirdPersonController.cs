@@ -141,7 +141,7 @@ namespace StarterAssets
         private Rigidbody rigidbody;
         private CapsuleCollider capsule;
         private CharacterController _controller;
-        private StarterAssetsInputs _input;
+        public StarterAssetsInputs _input;
         private GameObject _mainCamera;
 
         private const float _threshold = 0.01f;
@@ -158,14 +158,19 @@ namespace StarterAssets
 
         public bool _hasAnimator;
         //interact
-        [SerializeField] private Transform _interactionPoint;
+        /*[SerializeField] private Transform _interactionPoint;
         [SerializeField] private float _interactionPointRadius = 0.5f;
         [SerializeField] private LayerMask _interactableMask;
 
-        private readonly Collider[] _colliders = new Collider[3];
-        [SerializeField] private int _numFound;
+        private readonly Collider[] _colliders = new Collider[3];*/
+        //public int _numFound;
 
         public bool climbing = false;
+
+        //interact
+        /*public bool handRight = false;
+        public bool handLeft = false;*/
+        
         private bool IsCurrentDeviceMouse
         {
             get
@@ -228,34 +233,78 @@ namespace StarterAssets
             Crouch();
             ClimbbUP();
             Handup();
-            Interact();
+            //InteractR();
+            //InteractL();
         }
 
-        private void Interact()
+        /*private void InteractR()
         {
-            if (_input.Interact)
+            if (_input.InteractR)
             {
-                Debug.Log("interact");
-                _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
-                           _interactableMask);
-                if (_numFound > 0)
+                if(handRight == false)
                 {
-                    var interactable = _colliders[0].GetComponent<IInteractable>();
-                    if (interactable != null )
+                    Debug.Log("interact");
+                    _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
+                               _interactableMask);
+                    if (_numFound > 0)
                     {
-                        interactable.Interact(this);
+                        var interactable = _colliders[0].GetComponent<IInteractable>();
+                        if (interactable != null)
+                        {
+                            interactable.Interact(this);
+                            handRight = true;
+                            return;
+                        }
+                        
                     }
+                }else if(handRight == true)
+                {
+                    Debug.Log("full hand");
+                    return;
                 }
+                
 
                
             }
-            _input.Interact = false;
+            _input.InteractR = false;
         }
-        private void OnDrawGizmos()
+        private void InteractL()
+        {
+            if (_input.InteractR)
+            {
+                if (handLeft == false)
+                {
+                    Debug.Log("interact");
+                    _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
+                               _interactableMask);
+                    if (_numFound > 0)
+                    {
+                        var interactable = _colliders[0].GetComponent<IInteractable>();
+                        if (interactable != null)
+                        {
+                            interactable.Interact(this);
+                            handRight = true;
+                            return;
+                        }
+
+                    }
+                }
+                else if (handLeft == true)
+                {
+                    Debug.Log("full hand");
+                    return;
+                }
+
+
+
+            }
+            _input.InteractR = false;
+        }*/
+        /*private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
-        }
+        }*/
         private void Handup()
         {
             if (_input.handup)

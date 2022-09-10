@@ -3193,8 +3193,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.18, y: 12.95, z: 0.2}
-  m_Center: {x: 0, y: 0, z: -1.4}
+  m_Size: {x: 2.18, y: 6.9736505, z: 0.20000005}
+  m_Center: {x: 0, y: 2.9881752, z: -1.4}
 --- !u!43 &488798367
 Mesh:
   m_ObjectHideFlags: 0
@@ -3365,7 +3365,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh41464
+  m_Name: pb_Mesh39102
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5251,7 +5251,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.1213872, y: 1}
+    m_SensorSize: {x: 2.223007, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -10617,7 +10617,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh41694
+  m_Name: pb_Mesh39332
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11453,7 +11453,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh34142
+  m_Name: pb_Mesh39318
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -14145,6 +14145,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 640085978}
     m_Modifications:
+    - target: {fileID: 135756642000475821, guid: 64dce48905ffd9b4293e595fa6941544,
+        type: 3}
+      propertyPath: cursorLocked
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544,
         type: 3}
       propertyPath: m_RootOrder
@@ -16352,7 +16357,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh41400
+  m_Name: pb_Mesh39038
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

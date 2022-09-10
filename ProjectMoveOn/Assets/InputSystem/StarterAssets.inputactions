@@ -69,9 +69,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "InteractR",
                     "type": "Button",
                     "id": "4b63c87b-85fd-454c-b289-b4c6f8880895",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "InteractL",
+                    "type": "Button",
+                    "id": "a320839b-aa60-4d37-ad37-8bca66c89d29",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -295,7 +304,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "Interact",
+                    "action": "InteractR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "af4804dd-b69f-4f2a-acc0-21603dd211dc",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "InteractL",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

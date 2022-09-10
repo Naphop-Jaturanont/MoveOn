@@ -18,4 +18,14 @@ public class hintofleech : MonoBehaviour, IInteractable
         //showtext
         return true;
     }
+
+    public bool InteractL(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool InteractR(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
 }

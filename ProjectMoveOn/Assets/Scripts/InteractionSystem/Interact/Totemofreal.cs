@@ -19,6 +19,16 @@ public class Totemofreal : MonoBehaviour, IInteractable
         return true;
     }
 
+    public bool InteractL(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool InteractR(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
+
     // Start is called before the first frame update
     void Start()
     {

@@ -4,39 +4,140 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Interactor : MonoBehaviour
+
+namespace StarterAssets
 {
-     [SerializeField] private Transform interactionPoint;
-     [SerializeField] private float interactionPointRadius = 0.5f;
-     [SerializeField] private LayerMask interactableMask;
-
-     private readonly Collider[] _colliders = new Collider[3];
-     [SerializeField] private int numFound;
-
-    [SerializeField]private StarterAssets.StarterAssetsInputs inputs;
-
-    private void Start()
+    public class Interactor : MonoBehaviour
     {
-        inputs = GetComponent<StarterAssets.StarterAssetsInputs>();
-    }
+        public static Interactor Instance;
 
-    private void Update()
-    {
-        numFound = Physics.OverlapSphereNonAlloc(interactionPoint.position, interactionPointRadius, _colliders,
-               interactableMask);
-        if (numFound > 0)
+        [SerializeField] private Transform _interactionPoint;
+        [SerializeField] private float _interactionPointRadius = 0.5f;
+        [SerializeField] private LayerMask _interactableMask;
+        [SerializeField] private LayerMask _somethingbigMask;
+        public int _numFound;
+        private readonly Collider[] _colliders = new Collider[3];
+
+        public Transform PickUpPointR;
+        public Transform PickUpPointL;
+        public Transform hips;
+        public bool handRight = false;
+        public bool handLeft = false;
+
+        private void Start()
         {
-            var interactable = _colliders[0].GetComponent<IInteractable>();
-            if (interactable != null && inputs.Interact)
+            
+        }
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
+        }
+        private void Update()
+        {
+            InteractR();
+            InteractL();
+            InteractBoth();
+        }
+
+        private void InteractBoth()
+        {
+            if (ThirdPersonController.Instance._input.InteractR || ThirdPersonController.Instance._input.InteractR)
             {
-                interactable.Interact(this);
+                if (handRight == false && handLeft == false)
+                {
+                    Debug.Log("interactboth");
+                    _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
+                               _somethingbigMask);
+                    if (_numFound > 0)
+                    {
+                        var interactable = _colliders[0].GetComponent<IInteractable>();
+                        if (interactable != null)
+                        {
+                            interactable.Interact(this);
+                            handLeft = true;
+                            handRight = true;
+                            return;
+                        }
+
+                    }
+                }
+                else if (handRight == true && handLeft ==true)
+                {
+                    Debug.Log("full hand");
+                    return;
+                }
+
+
+
             }
+            ThirdPersonController.Instance._input.InteractR = false;
+        }
+
+        private void InteractR()
+        {
+            if (ThirdPersonController.Instance._input.InteractR)
+            {
+                if (handRight == false)
+                {
+                    Debug.Log("interact");
+                    _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
+                               _interactableMask);
+                    if (_numFound > 0)
+                    {
+                        var interactable = _colliders[0].GetComponent<IInteractable>();
+                        if (interactable != null)
+                        {
+                            interactable.InteractR(this);
+                            handRight = true;
+                            return;
+                        }
+
+                    }
+                }
+                else if (handRight == true)
+                {
+                    Debug.Log("full hand");
+                    return;
+                }
+
+
+
+            }
+            ThirdPersonController.Instance._input.InteractR = false;
+        }
+        private void InteractL()
+        {
+            if (ThirdPersonController.Instance._input.InteractR)
+            {
+                if (handLeft == false)
+                {
+                    Debug.Log("interact");
+                    _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
+                               _interactableMask);
+                    if (_numFound > 0)
+                    {
+                        var interactable = _colliders[0].GetComponent<IInteractable>();
+                        if (interactable != null)
+                        {
+                            interactable.InteractL(this);
+                            handRight = true;
+                            return;
+                        }
+
+                    }
+                }
+                else if (handLeft == true)
+                {
+                    Debug.Log("full hand");
+                    return;
+                }
+
+
+
+            }
+            ThirdPersonController.Instance._input.InteractR = false;
         }
     }
- 
-     private void OnDrawGizmos()
-     {
-          Gizmos.color = Color.red;
-          Gizmos.DrawWireSphere(interactionPoint.position, interactionPointRadius);
-     }
 }
+

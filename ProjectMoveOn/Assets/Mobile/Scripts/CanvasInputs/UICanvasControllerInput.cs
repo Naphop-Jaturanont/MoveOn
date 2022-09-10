@@ -42,9 +42,13 @@ namespace StarterAssets
         {
             starterAssetsInputs.handupInput(virtualSprintState);
         }
-        public void VirtualinteractInput(bool virtualSprintState)
+        public void VirtualinteractRInput(bool virtualSprintState)
         {
-            starterAssetsInputs.interactInput(virtualSprintState);
+            starterAssetsInputs.interactRInput(virtualSprintState);
+        }
+        public void VirtualinteractLInput(bool virtualSprintState)
+        {
+            starterAssetsInputs.interactLInput(virtualSprintState);
         }
 
     }

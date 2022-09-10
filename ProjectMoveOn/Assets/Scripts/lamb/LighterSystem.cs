@@ -7,39 +7,50 @@ public class LighterSystem : MonoBehaviour
 {
     public float Stamina = 100f;
     public float MaxStamina = 100f;
-    public Slider StaminaSlider;
+    //public Slider StaminaSlider;
+    public Light light;
+    public bool openlamb = false;
+    public keep keepcode;
     private StarterAssetsInputs _input;
 
-    public static LighterSystem lighterSystem;
+    //public static LighterSystem lighterSystem;
 
     private void Awake()
     {
-        lighterSystem = this;
+      //  lighterSystem = this;
     }
     void Start()
     {
         _input = GetComponent<StarterAssetsInputs>();
+        light = GetComponent<Light>();
+        keepcode = GetComponent<keep>();
         Stamina = MaxStamina;
-        StaminaSlider.GetComponent<Slider>().maxValue = MaxStamina;
-        StaminaSlider.GetComponent<Slider>().value = Stamina;
+        //StaminaSlider.GetComponent<Slider>().maxValue = MaxStamina;
+        //StaminaSlider.GetComponent<Slider>().value = Stamina;
     }
     void Update()
     {
-        StaminaSlider.GetComponent<Slider>().value = Stamina;
+        //StaminaSlider.GetComponent<Slider>().value = Stamina;
 
         //inputsystem
-
-        /*if (_input.openLighter)
+        if(keepcode.keeped == true)
         {
-            StartCoroutine(RemoveStamina(0.08f, 0.5f));
+            if (Input.GetKeyDown(KeyCode.F) && openlamb == false  )
+            {
+                light.range = 20.00f;
+                openlamb = true;
+                return;
+            }
+            if (Input.GetKeyDown(KeyCode.F) && openlamb == true)
+            {
+                light.range = 5.00f;
+                openlamb = false;
+                return;
+            }
         }
-        if(Stamina < MaxStamina)
-        {
-            StartCoroutine(RecoveryStamina(0.01f, 3f));
-        }if(Stamina == 0)
-        {
-            _input.openLighter = false;
-        }*/
+
+        
+        
     }
    public IEnumerator RemoveStamina(float value, float time)
     {

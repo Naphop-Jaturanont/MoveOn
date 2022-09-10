@@ -65,4 +65,14 @@ public class Lamp : MonoBehaviour, IInteractable
         PickUpLamp();
         return true;
     }
+
+    public bool InteractL(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool InteractR(Interactor interactor)
+    {
+        throw new System.NotImplementedException();
+    }
 }
