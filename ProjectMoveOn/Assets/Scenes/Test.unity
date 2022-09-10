@@ -186,7 +186,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 239378781582670930, guid: 446648e11dc37c4458f9af0b19ebb9d1, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -419,7 +419,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-10038
+  m_Name: pb_Mesh39786
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -715,7 +715,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 683834149}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 888d0baf49129bb45a005fecfd1fc205, type: 3}
+  m_Script: {fileID: 11500000, guid: caba275d05a06854dbbd04ec34af466c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PickUpPointR: {fileID: 724202083}
@@ -945,7 +945,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1557219237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 888d0baf49129bb45a005fecfd1fc205, type: 3}
+  m_Script: {fileID: 11500000, guid: caba275d05a06854dbbd04ec34af466c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PickUpPointR: {fileID: 724202083}
@@ -1187,7 +1187,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.4838014, y: 1}
+    m_SensorSize: {x: 2.223007, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
