@@ -42,7 +42,7 @@ namespace StarterAssets
 
         private void InteractBoth()
         {
-            if (ThirdPersonController.Instance._input.InteractR || ThirdPersonController.Instance._input.InteractR)
+            if (Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.E))
             {
                 if (handRight == false && handLeft == false)
                 {
@@ -108,7 +108,7 @@ namespace StarterAssets
         }
         private void InteractL()
         {
-            if (ThirdPersonController.Instance._input.InteractR)
+            if (ThirdPersonController.Instance._input.InteractL)
             {
                 if (handLeft == false)
                 {
@@ -136,7 +136,7 @@ namespace StarterAssets
 
 
             }
-            ThirdPersonController.Instance._input.InteractR = false;
+            ThirdPersonController.Instance._input.InteractL = false;
         }
     }
 }

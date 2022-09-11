@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class LighterSystem : MonoBehaviour
 {
+    public static LighterSystem instance;
     public float Stamina = 100f;
     public float MaxStamina = 100f;
     //public Slider StaminaSlider;

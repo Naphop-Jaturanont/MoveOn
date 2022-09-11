@@ -2,6 +2,7 @@ using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class keep : MonoBehaviour, IInteractable
 {
@@ -11,14 +12,16 @@ public class keep : MonoBehaviour, IInteractable
 
     [SerializeField]private Transform PickUpPointR = null;
     [SerializeField]private Transform PickUpPointL = null;
+    public Interactor Interactor;
     public bool keeped = false;
-    bool right = false;
-    bool left = false;
+    public bool right = false;
+    public bool left = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
+        Interactor = GameObject.Find("PlayerArmature").GetComponent<Interactor>();
     }
 
     private void Update()
@@ -26,20 +29,22 @@ public class keep : MonoBehaviour, IInteractable
         
         if(keeped == true)
         {
-            Debug.Log("keep");
             if(right == true)
             {
+                
                 gameObject.transform.position = PickUpPointR.position;
-                Debug.Log("keep1");
+                
+                
                 return;
             }
             if (left == true)
             {
                 gameObject.transform.position = PickUpPointL.position;
-                Debug.Log("keep2");
+                
                 return;
             }
-            
+            DropR();
+            DropL();
         }
     }
     public string InteractionPrompt => throw new System.NotImplementedException();
@@ -59,6 +64,7 @@ public class keep : MonoBehaviour, IInteractable
 
     public bool InteractL(Interactor interactor)
     {
+
         PickUpPointL = interactor.PickUpPointL;
         interactor.handLeft = true;
         rb.useGravity = false;
@@ -81,5 +87,41 @@ public class keep : MonoBehaviour, IInteractable
         keeped = true;
         right = true;
         return true;
+    }
+    private void DropR()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && right == true)
+        {
+            Debug.Log("DropR");
+            Interactor.handRight = false;
+            rb.useGravity = true;
+            collider.enabled = true;
+            keeped = true;
+            Invoke("ChangeBoolPick", 0.1f);
+        }
+    }
+    private void DropL()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && left ==true)
+        {
+            Interactor.handLeft = false;
+            rb.useGravity = true;
+            collider.enabled = true;
+            keeped = false;      
+            Invoke("ChangeBoolPick", 0.1f);
+        }
+    }
+    private void ChangeBoolPick()
+    {
+        if (right == true)
+        {
+            right = false;
+            return;
+        }
+        if (left == true)
+        {
+            left = false;
+            return;
+        }
     }
 }
