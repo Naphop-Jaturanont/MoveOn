@@ -36,18 +36,36 @@ public class LighterSystem : MonoBehaviour
         //inputsystem
         if(keepcode.keeped == true)
         {
-            if (Input.GetKeyDown(KeyCode.F) && openlamb == false  )
+            if(keepcode.left == true)
             {
-                light.range = 20.00f;
-                openlamb = true;
-                return;
-            }
-            if (Input.GetKeyDown(KeyCode.F) && openlamb == true)
+                if (Input.GetMouseButtonDown(0) && openlamb == false )
+                {
+                    light.range = 20.00f;
+                    openlamb = true;
+                    return;
+                }
+                if (Input.GetMouseButtonDown(0) && openlamb == true)
+                {
+                    light.range = 5.00f;
+                    openlamb = false;
+                    return;
+                }
+            }else if (keepcode.right)
             {
-                light.range = 5.00f;
-                openlamb = false;
-                return;
+                if (Input.GetMouseButtonDown(1) && openlamb == false )
+                {
+                    light.range = 20.00f;
+                    openlamb = true;
+                    return;
+                }
+                if (Input.GetMouseButtonDown(1) && openlamb == true)
+                {
+                    light.range = 5.00f;
+                    openlamb = false;
+                    return;
+                }
             }
+            
         }
 
         

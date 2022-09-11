@@ -33,7 +33,7 @@ namespace StarterAssets
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
         }
-        private void Update()
+        private void LateUpdate()
         {
             InteractR();
             InteractL();
@@ -121,7 +121,7 @@ namespace StarterAssets
                         if (interactable != null)
                         {
                             interactable.InteractL(this);
-                            handRight = true;
+                            handLeft = true;
                             return;
                         }
 

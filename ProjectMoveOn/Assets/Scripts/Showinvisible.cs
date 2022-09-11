@@ -21,7 +21,10 @@ public class Showinvisible : MonoBehaviour
     public float startalpha = 0f;
     public LighterSystem lighter;
     public Collider collider;
-    
+
+    public float t = 5.0f;
+    public float speed = .5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,9 +38,11 @@ public class Showinvisible : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if(lighter.openlamb == true)
+        //Material[] mats = renderers.materials;
+
+        if (lighter.openlamb == true)
         {
+            Debug.Log(Mathf.Sin(t * speed));
             collider.enabled = true;
             if (checkMethod == CheckMethod.Distance)
             {
@@ -86,10 +91,12 @@ public class Showinvisible : MonoBehaviour
     }
     void LoadScene()
     {
-        renderers.gameObject.SetActive(true);
-        startalpha = 1.0f;
-        //Color mycolor = new Color(1.0f, 1.0f, 1.0f, startalpha);
-        renderers.material.SetFloat("Cutoff", 0f);
+        Material[] mats = renderers.materials;
+        renderers.gameObject.SetActive(true);        
+        mats[0].SetFloat("_Cutoff", Mathf.Sin(t * speed));
+        t += Time.deltaTime;
+        if(Mathf.Sin(t*speed) <= 0) { mats[0].SetFloat("_Cutoff", 0); }        
+        renderers.material = mats[0];        
         isLoaded = true;        
     }
 
@@ -97,8 +104,12 @@ public class Showinvisible : MonoBehaviour
     {
         if (isLoaded)
         {
-            startalpha = 0f;
-            renderers.material.SetFloat("Cutoff", 1f);
+            Material[] mats = renderers.materials;
+            renderers.gameObject.SetActive(true);
+            mats[0].SetFloat("_Cutoff", Mathf.Sin(t * speed));
+            t += Time.deltaTime;
+            if (Mathf.Sin(t * speed) >= 0.9f) { mats[0].SetFloat("_Cutoff", 1); }
+            renderers.material = mats[0];
             isLoaded = false;
         }
     }

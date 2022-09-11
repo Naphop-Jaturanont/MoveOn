@@ -133,6 +133,7 @@ namespace StarterAssets
         private int _animIDCrouch;
         public int _animIDIshang;
         public int _animIDisClimbup;
+        public int _animIDDown;
 
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
         private PlayerInput _playerInput;
@@ -157,19 +158,14 @@ namespace StarterAssets
         private RaycastHit forwardRaycastHit;
 
         public bool _hasAnimator;
-        //interact
-        /*[SerializeField] private Transform _interactionPoint;
-        [SerializeField] private float _interactionPointRadius = 0.5f;
-        [SerializeField] private LayerMask _interactableMask;
-
-        private readonly Collider[] _colliders = new Collider[3];*/
-        //public int _numFound;
+        
 
         public bool climbing = false;
 
-        //interact
-        /*public bool handRight = false;
-        public bool handLeft = false;*/
+        public LayerMask ladderMask;
+        public Transform chestT;
+        public Interactor interactor;
+        RaycastHit hitinfo;
         
         private bool IsCurrentDeviceMouse
         {
@@ -210,6 +206,7 @@ namespace StarterAssets
             _hasAnimator = TryGetComponent(out _animator);
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<StarterAssetsInputs>();
+            interactor = GetComponent<Interactor>();
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
             _playerInput = GetComponent<PlayerInput>();
 #else
@@ -233,78 +230,10 @@ namespace StarterAssets
             Crouch();
             ClimbbUP();
             Handup();
-            //InteractR();
-            //InteractL();
+            
         }
 
-        /*private void InteractR()
-        {
-            if (_input.InteractR)
-            {
-                if(handRight == false)
-                {
-                    Debug.Log("interact");
-                    _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
-                               _interactableMask);
-                    if (_numFound > 0)
-                    {
-                        var interactable = _colliders[0].GetComponent<IInteractable>();
-                        if (interactable != null)
-                        {
-                            interactable.Interact(this);
-                            handRight = true;
-                            return;
-                        }
-                        
-                    }
-                }else if(handRight == true)
-                {
-                    Debug.Log("full hand");
-                    return;
-                }
-                
-
-               
-            }
-            _input.InteractR = false;
-        }
-        private void InteractL()
-        {
-            if (_input.InteractR)
-            {
-                if (handLeft == false)
-                {
-                    Debug.Log("interact");
-                    _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders,
-                               _interactableMask);
-                    if (_numFound > 0)
-                    {
-                        var interactable = _colliders[0].GetComponent<IInteractable>();
-                        if (interactable != null)
-                        {
-                            interactable.Interact(this);
-                            handRight = true;
-                            return;
-                        }
-
-                    }
-                }
-                else if (handLeft == true)
-                {
-                    Debug.Log("full hand");
-                    return;
-                }
-
-
-
-            }
-            _input.InteractR = false;
-        }*/
-        /*private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
-        }*/
+       
         private void Handup()
         {
             if (_input.handup)
@@ -333,6 +262,7 @@ namespace StarterAssets
             _animIDCrouch = Animator.StringToHash("Crouch");
             _animIDIshang = Animator.StringToHash("isHang");
             _animIDisClimbup = Animator.StringToHash("isClimbup");
+            _animIDDown = Animator.StringToHash("Down");
         }
 
         private void GroundedCheck()
@@ -439,7 +369,7 @@ namespace StarterAssets
                 }
                 else if (_ladderYZ == true)
                 {
-                    transform.Translate(Vector3.up * _speed * Time.deltaTime);
+                    transform.Translate(Vector3.up * 1.5f * Time.deltaTime);
                 }
             }
             if(Grounded == false &&_ladderYZ == false)
@@ -497,15 +427,31 @@ namespace StarterAssets
 
         private void ClimbbUP()
         {
-            if (_climbing == true)
+            if (interactor.handRight == false && interactor.handLeft == false)
             {
-                if (_input.climb == true)
+                Ray ray = new Ray(chestT.position, chestT.TransformDirection(Vector3.forward));
+                if (Physics.Raycast(ray, out hitinfo, 5f, ladderMask, QueryTriggerInteraction.Ignore))
                 {
-                    _animator.SetFloat(_animIDisClimbup, 0.111f);
-                    Debug.Log("climbup");
+
+                    if (_input.climb == true)
+                    {
+                        _ladderYZ = true;
+                        _animator.SetBool(_animIDIshang, true);
+                        //transform.Translate(Vector3.forward * 2);
+                        _verticalVelocity = 0f;
+                    }
+                    if (Input.GetKeyDown(KeyCode.C))
+                    {
+                        _ladderYZ = false;
+                        _animator.SetBool(_animIDIshang, false);
+                        _animator.SetTrigger(_animIDDown);
+                        _verticalVelocity = -2f;
+                    }
                 }
+                Debug.DrawRay(chestT.position, chestT.TransformDirection(Vector3.forward) * hitinfo.distance, Color.red);
+                _input.climb = false;
             }
-            _input.climb = false;
+                      
         }
 
         private void JumpAndGravity()

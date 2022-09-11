@@ -26,31 +26,27 @@ public class keep : MonoBehaviour, IInteractable
 
     private void Update()
     {
-        
-        if(keeped == true)
+        if (keeped == true)
         {
-            if(right == true)
+            if (right == true)
             {
-                
+
                 gameObject.transform.position = PickUpPointR.position;
-                
-                
+
+                DropR();
                 return;
             }
             if (left == true)
             {
                 gameObject.transform.position = PickUpPointL.position;
-                
+                DropL();
                 return;
             }
-            DropR();
-            DropL();
         }
     }
     public string InteractionPrompt => throw new System.NotImplementedException();
 
             
-    
     public bool Interact(Interactor interactor)
     {
         //itemIsPickedR = true;
@@ -92,24 +88,30 @@ public class keep : MonoBehaviour, IInteractable
     {
         if (Input.GetKeyDown(KeyCode.E) && right == true)
         {
+            this.transform.parent = null;
             Debug.Log("DropR");
             Interactor.handRight = false;
             rb.useGravity = true;
             collider.enabled = true;
-            keeped = true;
+            keeped = false;
             Invoke("ChangeBoolPick", 0.1f);
         }
+        
+        
     }
     private void DropL()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && left ==true)
+        if (Input.GetKeyDown(KeyCode.Q) && left == true)
         {
+            this.transform.parent = null;
             Interactor.handLeft = false;
             rb.useGravity = true;
             collider.enabled = true;
-            keeped = false;      
+            keeped = false;
             Invoke("ChangeBoolPick", 0.1f);
         }
+        
+        
     }
     private void ChangeBoolPick()
     {
